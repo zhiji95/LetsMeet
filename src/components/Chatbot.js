@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import MessageList from './MessageList';
 import MessageForm from './MessageForm';
-import '../css/Main.css';
+import '../css/Chatbot.css';
 
-class Main extends Component {
+class Chatbot extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -21,7 +21,7 @@ class Main extends Component {
 
     render() {
         return (
-            <div className="Main">
+            <div className="Chatbot">
                 <MessageList messages={this.state.messages} />
                 <MessageForm onMessageSend={this.handleNewMessage} />
             </div>
@@ -29,4 +29,4 @@ class Main extends Component {
     }
 }
 
-export default Main;
+export default Chatbot;

@@ -85,7 +85,7 @@ export default class Signup extends Component {
             await Auth.signIn(this.state.email, this.state.password);
 
             this.props.userHasAuthenticated(true);
-            this.props.history.push("/main");
+            this.props.history.push("/groupControl");
         } catch (e) {
             alert(e.message);
             this.setState({ isLoading: false });
