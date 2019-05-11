@@ -3,6 +3,7 @@ import '../css/GroupControl.css';
 import {FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import CreateGroup from "./CreateGroup";
 import InviteFriend from "./InviteFriend";
+import {Link} from "react-router-dom";
 
 class GroupControl extends Component {
     constructor(props) {
@@ -26,6 +27,10 @@ class GroupControl extends Component {
     render() {
         return (
             <div className="GroupControl">
+                <div>Link to google map</div>:
+                <Link to="/GoogleMap" className="GoogleMap">
+                                    GoogleMap
+                                </Link>
                 <div className="ListGroups">
 
                 </div>
