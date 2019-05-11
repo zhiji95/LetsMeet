@@ -15,12 +15,6 @@
     font-size: 3rem;
 }
 
-.App h1 img {
-    position: relative;
-    margin-left: 1.8rem;
-    bottom: 1.3vh;
-}
-
 .App h1 .SignUp{
     position: absolute;
     top: 2.5vh;
