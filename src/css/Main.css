@@ -1,0 +1,56 @@
+.Main {
+    border: 1.5px solid #ccc;
+    border-radius: 3px;
+    height: 88vh;
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    font-size: 13x;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .Main .MessageList {
+    box-sizing: border-box;
+    flex: 1;
+  }
+
+  .Main .MessageForm {
+    background: #eee;
+    border-top: 1px solid #ccc;
+    border-radius: 0 0 3px 3px;
+    box-sizing: border-box;
+    flex: 0 0 30px;
+  }
+
+  .Main-logo {
+    animation: Main-logo-spin infinite 20s linear;
+    height: 40vmin;
+    pointer-events: none;
+  }
+
+  .Main-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+
+  .Main-link {
+    color: #61dafb;
+  }
+
+  @keyframes Main-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }

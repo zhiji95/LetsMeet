@@ -1,0 +1,38 @@
+.App .navbar {
+    background-color: #808080;
+    height: 8vh;
+    margin-top: 0.9vh;
+    margin-left: 1.1vw;
+    margin-right: 1.1vw;
+    border-radius: 3px;
+}
+
+.App h1 b {
+    position: relative;
+    margin-left: 2vw;
+    bottom: 0.9vh;
+    color: white;
+    font-size: 3rem;
+}
+
+.App h1 img {
+    position: relative;
+    margin-left: 1.8rem;
+    bottom: 1.3vh;
+}
+
+.App h1 .SignUp{
+    position: absolute;
+    top: 2.5vh;
+    right: 3vw;
+    color: white;
+    font-size: 2.5rem;
+}
+
+.App h1 .LogOut{
+    position: absolute;
+    top: 2.5vh;
+    right: 3vw;
+    color: white;
+    font-size: 2.5rem;
+}
