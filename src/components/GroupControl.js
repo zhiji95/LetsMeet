@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import '../css/GroupControl.css';
 import {FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import CreateGroup from "./CreateGroup";
+import InviteFriend from "./InviteFriend";
 
 class GroupControl extends Component {
     constructor(props) {
@@ -38,6 +39,10 @@ class GroupControl extends Component {
                     />
                 </div>
                 <div className="InviteFriend">
+                    <InviteFriend
+                        block
+                        onClickFunction={this.handleCreateGroup}
+                    />
                 </div>
                 <div className="SelectGroup">
                 </div>
