@@ -491,6 +491,8 @@ def make_appointment(intent_request):
 """ --- Intents --- """
 from botocore.vendored import requests
 
+top_choices = []
+
 def dispatch(intent_request):
     """
     Called when the user specifies an intent for this bot.
@@ -498,6 +500,7 @@ def dispatch(intent_request):
 
     logger.debug('dispatch userId={}, intentName={}'.format(intent_request['userId'], intent_request['currentIntent']['name']))
 
+    print('intent_request = ', intent_request)
     intent_name = intent_request['currentIntent']['name']
 
     # Dispatch to your bot's intent handlers
@@ -537,44 +540,113 @@ def dispatch(intent_request):
         diningTime = intent_request['currentIntent']['slots']['meetingTime']
         numPeople = intent_request['currentIntent']['slots']['numPeople']
         transportationMethod = intent_request['currentIntent']['slots']['transportationMethod']
-
-        URL = 'https://api.yelp.com/v3/businesses/search?term={}&location={}&limit=3'\
-        .format(cuisine, location)
+        choice = intent_request['currentIntent']['slots']['choice']
         
-        res = requests.get(URL, headers={"Authorization":\
-                                 "Bearer wdUCkyGbiAnMzKyHbWzz5IaNe_XfDWGkjjmj31WH9wIvCDRwQMGakG2nU7LrnnPJiurFJ78T0ca6kMqJ2Bo2NEzpg87L1D5kjbl-e6cb61Z7ovgsV2eR5ZN7NleEXHYx"})
-
-        res_json = res.json()
-
-        if res_json['businesses']:
+        print('slots = ', intent_request['currentIntent']['slots'])
+        print('top_choices = ', top_choices)
+        
+        if choice is None:
+            URL = 'https://api.yelp.com/v3/businesses/search?term={}&location={}&limit=3'\
+            .format(cuisine, location)
             
-            print('businesses = ', res_json['businesses'][0])
-            
-            response = 'Here are my {} dining suggestions for {} people, for today at {}:\n '\
-            .format(cuisine, numPeople, diningTime)
-            for k in range(len(res_json['businesses'])):
-                response += str(k+1) + '. ' + res_json['businesses'][k]['name'] + ', located at ' \
-                + res_json['businesses'][k]['location']['address1'] + ', coordinates: ' + \
-                str(res_json['businesses'][k]['coordinates']['latitude']) + ',' + \
-                str(res_json['businesses'][k]['coordinates']['longitude']) + '\n'
-                
+            res = requests.get(URL, headers={"Authorization":\
+                                     "Bearer wdUCkyGbiAnMzKyHbWzz5IaNe_XfDWGkjjmj31WH9wIvCDRwQMGakG2nU7LrnnPJiurFJ78T0ca6kMqJ2Bo2NEzpg87L1D5kjbl-e6cb61Z7ovgsV2eR5ZN7NleEXHYx"})
+    
+            res_json = res.json()
+    
+            if res_json['businesses']:
+                response = 'Here are my {} dining suggestions for {} people, for today at {}:\n '\
+                .format(cuisine, numPeople, diningTime)
+                for k in range(len(res_json['businesses'])):
+                    response += str(k+1) + '. ' + res_json['businesses'][k]['name'] + ', located at ' \
+                    + res_json['businesses'][k]['location']['address1'] + ', coordinates: ' + \
+                    str(res_json['businesses'][k]['coordinates']['latitude']) + ',' + \
+                    str(res_json['businesses'][k]['coordinates']['longitude']) + '\n'
+                    
+                    top_choices.append(res_json['businesses'][k])
+                    
                 if k != len(res_json['businesses']) - 1:
-                    response += ', '
-            
-            response += '.\n Enjoy your meal! (=^.^=)'
+                        response += ', '
+                        
+                response += '. Which option would you like to choose?'
+
+                return elicit_slot(
+                    output_session_attributes, 
+                    intent_name, 
+                    intent_request['currentIntent']['slots'], 
+                    "choice",
+                    {
+                        "contentType": "PlainText",
+                        "content": response
+                    },
+                    None
+                    # {
+                    #     "version": 1,
+                    #     "contentType": "application/vnd.amazonaws.card.generic",
+                    #     "genericAttachments": [
+                    #         {
+                    #             "title":"card-title",
+                    #             "subTitle":"card-sub-title",
+                    #             # "imageUrl":"URL of the image to be shown",
+                    #             # "attachmentLinkUrl":"URL of the attachment to be associated with the card",
+                    #             "buttons":[ 
+                    #                 {
+                    #                   "text":"Choice 1",
+                    #                   "value":1
+                    #                 },
+                    #                 {
+                    #                   "text":"Choice 2",
+                    #                   "value":2
+                    #                 },
+                    #                 {
+                    #                   "text":"Choice 3",
+                    #                   "value":3
+                    #                 }
+                    #             ]
+                    #         } 
+                    #     ] 
+                    # }
+                    )
         else:
-            response = "Sorry, I couldn't find {} dining suggestions for {} people, for today at {}.\n "\
-            .format(cuisine, numPeople, diningTime)
-        
-        return close(
-                output_session_attributes,
-                'Fulfilled',
-                {
-                    'contentType': 'PlainText',
-                    'content': response
-                }
-            )
-        
+            # URL = 'https://api.yelp.com/v3/businesses/search?term={}&location={}&limit=3'\
+            # .format(cuisine, location)
+            
+            # res = requests.get(URL, headers={"Authorization":\
+            #                          "Bearer wdUCkyGbiAnMzKyHbWzz5IaNe_XfDWGkjjmj31WH9wIvCDRwQMGakG2nU7LrnnPJiurFJ78T0ca6kMqJ2Bo2NEzpg87L1D5kjbl-e6cb61Z7ovgsV2eR5ZN7NleEXHYx"})
+    
+            # res_json = res.json()
+    
+            # if res_json['businesses']:
+                
+            #     print('businesses = ', res_json['businesses'][0])
+                
+            #     response = 'Here are my {} dining suggestions for {} people, for today at {}:\n '\
+            #     .format(cuisine, numPeople, diningTime)
+            #     for k in range(len(res_json['businesses'])):
+            #         response += str(k+1) + '. ' + res_json['businesses'][k]['name'] + ', located at ' \
+            #         + res_json['businesses'][k]['location']['address1'] + ', coordinates: ' + \
+            #         str(res_json['businesses'][k]['coordinates']['latitude']) + ',' + \
+            #         str(res_json['businesses'][k]['coordinates']['longitude']) + '\n'
+                    
+            #         if k != len(res_json['businesses']) - 1:
+            #             response += ', '
+            
+            ideal_business = top_choices[int(choice)-1]
+            response = "OK, I am reserving " + ideal_business['name'] + " for you. Enjoy your meal!"
+            
+            # else:
+            #     response = "Sorry, I couldn't find {} dining suggestions for {} people, for today at {}.\n "\
+            #     .format(cuisine, numPeople, diningTime)
+            
+            return close(
+                    output_session_attributes,
+                    'Fulfilled',
+                    {
+                        'contentType': 'PlainText',
+                        'content': response
+                    }
+                )
+            
 
         # appointment_type = intent_request['currentIntent']['slots']['AppointmentType']
         # date = intent_request['currentIntent']['slots']['Date']
