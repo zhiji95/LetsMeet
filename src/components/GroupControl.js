@@ -17,7 +17,7 @@ class GroupControl extends Component {
                     <CreateGroup currentUser={this.props.loggedOnUser}/>
                 </div>
                 <div className="InviteFriend">
-                    <InviteFriend />
+                    <InviteFriend currentUser={this.props.loggedOnUser}/>
                 </div>
             </div>
         );

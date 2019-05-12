@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Button, FormControl, FormGroup, FormLabel, Col, Container} from "react-bootstrap";
+import { API } from "aws-amplify";
 import "../css/InviteFriend.css";
 
 export default class InviteFriend extends Component {
@@ -22,37 +23,26 @@ export default class InviteFriend extends Component {
     handleSubmit = async (event) => {
         event.preventDefault();
 
-        await this.sendEmail(this.state.name, this.state.email);
+        if (this.props.currentUser === this.state.email) {
+            alert('you can`t invite yourself');
+        } else {
+            const sendEmailData = await this.sendEmail(this.state.name, this.state.email);
+
+            if (sendEmailData.message === 'success') {
+                alert(`invite successfully sent to ${this.state.email}`);
+            } else {
+                alert('invite attemp failed - please double-check the e-mail address');
+            }
+        }
     }
 
     sendEmail = async (name, recipient) => {
-        const nodemailer = require('nodemailer');
-
-        nodemailer.createTestAccount((err, account) => {
-            const transporter = nodemailer.createTransport({
-                host: 'smtp.googlemail.com',
-                port: 465,
-                secure: true,
-                auth: {
-                    user: 'letsmeet.invite', //Gmail username
-                    pass: 'Test!@34' // Gmail password
-                }
-            });
-
-            const mailOptions = {
-                from: 'Let`s Meet <letsmeet.invite@gmail.com>',
-                to: recipient,
-                subject: `Hey ${name}, your friend wants to meet up`,
-                text: 'http://restaurant-meetup.s3-website-us-east-1.amazonaws.com/signup'
-            };
-
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    return console.log(error);
-                }
-                console.log('Message sent: %s', info.messageId);
-            });
-        });
+        return API.post("endpoints", "restaurant-meetup-send-email", {
+            body: {
+                name: name,
+                recipient: recipient
+            }
+        })
     }
 
     render() {
