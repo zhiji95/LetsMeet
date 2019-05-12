@@ -1,0 +1,14 @@
+.ListGroups.container {
+    padding: 0.2em;
+    display: flex;
+    text-align: center;
+    width: 80%;
+}
+
+.card {
+    border: 0.2em solid white;
+}
+
+.card-body {
+    padding: 0.2em;
+}

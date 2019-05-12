@@ -52,6 +52,14 @@ functions:
           method: post
           cors: true
 
+  getAllGroups:
+    handler: getAllGroups.main
+    events:
+      - http:
+          path: restaurant-meetup-groups
+          method: get
+          cors: true
+
 resources:
   # API Gateway Errors
   - ${file(resources/api-gateway-errors.yml)}

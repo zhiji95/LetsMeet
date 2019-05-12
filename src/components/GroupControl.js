@@ -1,22 +1,17 @@
 import React, { Component } from "react";
+import ListGroups from "./ListGroups";
 import CreateGroup from "./CreateGroup";
 // import InviteFriend from "./InviteFriend";
 
 import '../css/GroupControl.css';
 
 class GroupControl extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            groups: []
-        }
-    }
 
     render() {
         return (
             <div className="GroupControl">
                 <div className="ListGroups">
-
+                    <ListGroups currentUser={this.props.loggedOnUser}/>
                 </div>
                 <div className="CreateGroup">
                     <CreateGroup currentUser={this.props.loggedOnUser}/>
