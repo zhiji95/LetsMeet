@@ -57,7 +57,7 @@ export default class CreateGroup extends Component {
                         <FormControl type="groupName" value={this.state.groupName} onChange={this.handleChange} />
                         </FormGroup>
 
-                        <FormGroup>
+                        <FormGroup controlId="description">
                             <FormLabel>Description</FormLabel>
                             <FormControl as="textarea" ref={this.textAreaInput} rows="2" onChange={this.handleChange} />
                         </FormGroup>
