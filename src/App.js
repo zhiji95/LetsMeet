@@ -3,7 +3,6 @@ import { Link, withRouter } from "react-router-dom";
 import { Navbar } from "react-bootstrap";
 import Routes from "./Routes";
 import { Auth } from "aws-amplify";
-import logo from './assets/robot.png';
 import './App.css';
 
 class App extends Component {
@@ -12,7 +11,8 @@ class App extends Component {
 
         this.state = {
           isAuthenticated: false,
-          isAuthenticating: true
+          isAuthenticating: true,
+          loggedOnUser: ""
         };
     }
 
@@ -30,20 +30,27 @@ class App extends Component {
         this.setState({ isAuthenticating: false });
     }
 
-    userHasAuthenticated = authenticated => {
+    userHasAuthenticated = (authenticated) => {
         this.setState({ isAuthenticated: authenticated });
     }
 
-    handleLogout = async event => {
+    logUser = (email) => {
+        this.setState({ loggedOnUser: email });
+    }
+
+    handleLogout = async (event) => {
         await Auth.signOut();
         this.userHasAuthenticated(false);
+        this.logUser('');
         this.props.history.push("/login");
     }
 
     render() {
         const childProps = {
             isAuthenticated: this.state.isAuthenticated,
-            userHasAuthenticated: this.userHasAuthenticated
+            userHasAuthenticated: this.userHasAuthenticated,
+            loggedOnUser: this.state.loggedOnUser,
+            logUser: this.logUser
         };
 
         return (

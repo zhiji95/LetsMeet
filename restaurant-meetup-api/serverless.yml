@@ -36,15 +36,21 @@ functions:
   # - method: POST request
   # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
   #     domain api call
-  # - authorizer: authenticate using the AWS IAM role
-  addUser:
-    handler: addUser.main
+  createUser:
+    handler: createUser.main
     events:
       - http:
           path: restaurant-meetup-users
           method: post
           cors: true
-          authorizer: aws_iam
+
+  createGroup:
+    handler: createGroup.main
+    events:
+      - http:
+          path: restaurant-meetup-groups
+          method: post
+          cors: true
 
 resources:
   # API Gateway Errors

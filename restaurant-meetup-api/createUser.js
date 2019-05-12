@@ -1,4 +1,3 @@
-import uuid from "uuid";
 import * as dynamoDbLib from "./libs/dynamodb-lib";
 import { success, failure } from "./libs/response-lib";
 
@@ -11,6 +10,7 @@ export async function main(event, context, callback) {
     TableName: "restaurant-meetup-users",
     Item: {
       userId: data.userId,
+      name: data.name,
       address: data.address,
     }
   };

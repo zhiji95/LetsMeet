@@ -10,6 +10,7 @@ export default class Signup extends Component {
 
     this.state = {
         isLoading: false,
+        name: "",
         email: "",
         address: "",
         password: "",
@@ -32,31 +33,33 @@ export default class Signup extends Component {
         return this.state.confirmationCode.length > 0;
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
         this.setState({
             [event.target.id]: event.target.value
         });
   }
 
-  // addUser API call
-  addUser = async (data) => {
+  // createUser API call
+  createUser = async (data) => {
     return API.post("endpoints", "restaurant-meetup-users", {
         body: {
             userId: data.userId,
+            name: data.name,
             address: data.address
         }
     })
   }
 
-  handleSubmit = async event => {
+  handleSubmit = async (event) => {
         event.preventDefault();
 
-        const addUserData = await this.addUser({
+        const createUserData = await this.createUser({
             userId: this.state.email,
+            name: this.state.name,
             address: this.state.address
         })
 
-        console.log('addUser API call: ', addUserData);
+        console.log('createUser API call: ', createUserData);
 
         this.setState({ isLoading: true });
 
@@ -75,7 +78,7 @@ export default class Signup extends Component {
         this.setState({ isLoading: false });
   }
 
-  handleConfirmationSubmit = async event => {
+  handleConfirmationSubmit = async (event) => {
         event.preventDefault();
 
         this.setState({ isLoading: true });
@@ -83,8 +86,8 @@ export default class Signup extends Component {
         try {
             await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
             await Auth.signIn(this.state.email, this.state.password);
-
             this.props.userHasAuthenticated(true);
+            this.props.logUser(this.state.email);
             this.props.history.push("/groupControl");
         } catch (e) {
             alert(e.message);
@@ -120,6 +123,15 @@ export default class Signup extends Component {
   renderForm() {
     return (
         <form onSubmit={this.handleSubmit}>
+            <FormGroup controlId="name" bssize="large">
+                <FormLabel>Name</FormLabel>
+            <FormControl
+                autoFocus
+                type="name"
+                value={this.state.name}
+                onChange={this.handleChange}
+            />
+            </FormGroup>
             <FormGroup controlId="email" bssize="large">
                 <FormLabel>Email</FormLabel>
             <FormControl

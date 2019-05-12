@@ -1,54 +1,32 @@
 import React, { Component } from "react";
-import '../css/GroupControl.css';
-import {FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import CreateGroup from "./CreateGroup";
-import InviteFriend from "./InviteFriend";
-import {Link} from "react-router-dom";
+// import InviteFriend from "./InviteFriend";
+
+import '../css/GroupControl.css';
 
 class GroupControl extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            groups: [],
-            // groupName:"",
-            // description:""
+            groups: []
         }
     }
-
-    handleCreateGroup = event => {
-        alert(this.state.description);
-        var group = {};
-        group[this.state.groupName] = this.state.description;
-        this.state.groups.push(group);
-    }
-
-
 
     render() {
         return (
             <div className="GroupControl">
-                <div>Link to google map</div>:
-                <Link to="/GoogleMap" className="GoogleMap">
-                                    GoogleMap
-                                </Link>
                 <div className="ListGroups">
 
                 </div>
                 <div className="CreateGroup">
-                    <CreateGroup
-                        block
-                        onClickFunction={this.handleCreateGroup}
-                        // groupName={this.state.groupName}
-                        // description={this.state.description}
-
-                    />
+                    <CreateGroup currentUser={this.props.loggedOnUser}/>
                 </div>
-                <div className="InviteFriend">
+                {/* <div className="InviteFriend">
                     <InviteFriend
                         block
                         onClickFunction={this.handleCreateGroup}
                     />
-                </div>
+                </div> */}
                 <div className="SelectGroup">
                 </div>
             </div>

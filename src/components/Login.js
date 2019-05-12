@@ -30,6 +30,7 @@ class Login extends Component {
         try {
             await Auth.signIn(this.state.email, this.state.password);
             this.props.userHasAuthenticated(true);
+            this.props.logUser(this.state.email);
             this.props.history.push("/groupControl");
         } catch (e) {
             alert(e.message);
