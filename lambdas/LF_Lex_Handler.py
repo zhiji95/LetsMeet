@@ -491,6 +491,8 @@ def make_appointment(intent_request):
 """ --- Intents --- """
 from botocore.vendored import requests
 
+top_choices = []
+
 def dispatch(intent_request):
     """
     Called when the user specifies an intent for this bot.
@@ -541,7 +543,7 @@ def dispatch(intent_request):
         choice = intent_request['currentIntent']['slots']['choice']
         
         print('slots = ', intent_request['currentIntent']['slots'])
-        
+        print('top_choices = ', top_choices)
         
         if choice is None:
             URL = 'https://api.yelp.com/v3/businesses/search?term={}&location={}&limit=3'\
@@ -553,6 +555,21 @@ def dispatch(intent_request):
             res_json = res.json()
     
             if res_json['businesses']:
+                response = 'Here are my {} dining suggestions for {} people, for today at {}:\n '\
+                .format(cuisine, numPeople, diningTime)
+                for k in range(len(res_json['businesses'])):
+                    response += str(k+1) + '. ' + res_json['businesses'][k]['name'] + ', located at ' \
+                    + res_json['businesses'][k]['location']['address1'] + ', coordinates: ' + \
+                    str(res_json['businesses'][k]['coordinates']['latitude']) + ',' + \
+                    str(res_json['businesses'][k]['coordinates']['longitude']) + '\n'
+                    
+                    top_choices.append(res_json['businesses'][k])
+                    
+                if k != len(res_json['businesses']) - 1:
+                        response += ', '
+                        
+                response += '. Which option would you like to choose?'
+
                 return elicit_slot(
                     output_session_attributes, 
                     intent_name, 
@@ -560,26 +577,36 @@ def dispatch(intent_request):
                     "choice",
                     {
                         "contentType": "PlainText",
-                        "content": "Which option would you like to choose?"
-                    }, 
-                    {
-                        "version": 1,
-                        "contentType": "application/vnd.amazonaws.card.generic",
-                        "genericAttachments": [
-                            {
-                                "title":"card-title",
-                                "subTitle":"card-sub-title",
-                                # "imageUrl":"URL of the image to be shown",
-                                # "attachmentLinkUrl":"URL of the attachment to be associated with the card",
-                                "buttons":[ 
-                                    {
-                                       "text":"button-text",
-                                       "value":"Value sent to server on button click"
-                                    }
-                                ]
-                            } 
-                        ] 
-                    })
+                        "content": response
+                    },
+                    None
+                    # {
+                    #     "version": 1,
+                    #     "contentType": "application/vnd.amazonaws.card.generic",
+                    #     "genericAttachments": [
+                    #         {
+                    #             "title":"card-title",
+                    #             "subTitle":"card-sub-title",
+                    #             # "imageUrl":"URL of the image to be shown",
+                    #             # "attachmentLinkUrl":"URL of the attachment to be associated with the card",
+                    #             "buttons":[ 
+                    #                 {
+                    #                   "text":"Choice 1",
+                    #                   "value":1
+                    #                 },
+                    #                 {
+                    #                   "text":"Choice 2",
+                    #                   "value":2
+                    #                 },
+                    #                 {
+                    #                   "text":"Choice 3",
+                    #                   "value":3
+                    #                 }
+                    #             ]
+                    #         } 
+                    #     ] 
+                    # }
+                    )
         else:
             # URL = 'https://api.yelp.com/v3/businesses/search?term={}&location={}&limit=3'\
             # .format(cuisine, location)
@@ -603,8 +630,10 @@ def dispatch(intent_request):
                     
             #         if k != len(res_json['businesses']) - 1:
             #             response += ', '
-                
-            response = '.\n Enjoy your meal! (=^.^=)'
+            
+            ideal_business = top_choices[int(choice)-1]
+            response = "OK, I am reserving " + ideal_business['name'] + " for you. Enjoy your meal!"
+            
             # else:
             #     response = "Sorry, I couldn't find {} dining suggestions for {} people, for today at {}.\n "\
             #     .format(cuisine, numPeople, diningTime)
