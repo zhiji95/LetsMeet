@@ -36,6 +36,7 @@ functions:
   # - method: POST request
   # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
   #     domain api call
+
   createUser:
     handler: createUser.main
     events:
@@ -44,12 +45,28 @@ functions:
           method: post
           cors: true
 
+  getUser:
+    handler: getUser.main
+    events:
+      - http:
+          path: restaurant-meetup-users/{id}
+          method: get
+          cors: true
+
   createGroup:
     handler: createGroup.main
     events:
       - http:
           path: restaurant-meetup-groups
           method: post
+          cors: true
+
+  getGroup:
+    handler: getGroup.main
+    events:
+      - http:
+          path: restaurant-meetup-groups/{id}
+          method: get
           cors: true
 
   getAllGroups:

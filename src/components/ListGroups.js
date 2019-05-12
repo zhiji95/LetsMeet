@@ -21,21 +21,39 @@ export default class ListGroups extends Component {
         return API.get("endpoints", "restaurant-meetup-groups");
     }
 
+    getGroup = async (groupId) => {
+        return API.get("endpoints", `restaurant-meetup-groups/${groupId}`);
+    }
+
+    getUser = async (userId) => {
+        return API.get("endpoints", `restaurant-meetup-users/${userId}`);
+    }
+
     handleSubmit = async (groupId, users) => {
 
-        if (!users.includes(this.props.currentUser)) {
-            const updateGroupData = await this.updateGroup({
-                groupId: groupId,
-                user: this.props.currentUser
-            })
+        // if (!users.includes(this.props.currentUser)) {
+        //     const updateGroupData = await this.updateGroup({
+        //         groupId: groupId,
+        //         user: this.props.currentUser
+        //     })
 
-            console.log('SELECT GROUP:', updateGroupData);
-        } else {
-            alert('you are already in the group');
-        }
+        //     console.log('SELECT GROUP:', updateGroupData);
+        // } else {
+        //     alert('you are already in the group');
+        // }
 
         const getAllGroupsData = await this.getAllGroups();
         await this.setState({ groups: getAllGroupsData.Items });
+
+        const participants = [];
+
+        const getGroupData = await this.getGroup(groupId);
+        getGroupData.users.forEach(async user => {
+            const userData = await this.getUser(user);
+            await participants.push(userData);
+        })
+
+        console.log(participants);
 
         // Step 1: make a function and API to pass data to Lex
         // Step 2: move to chatbot page: this.props.history.push("/chatBot");
