@@ -41,6 +41,9 @@ export default class CreateGroup extends Component {
         })
 
         console.log('createGroup API call: ', createGroupData);
+
+        // Step 1: make a function and API to pass data to Lex
+        // Step 2: move to chatbot page: this.props.history.push("/chatBot");
     }
 
     render() {

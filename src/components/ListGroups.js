@@ -16,12 +16,38 @@ export default class ListGroups extends Component {
         const getAllGroupsData = await this.getAllGroups();
         await this.setState({ groups: getAllGroupsData.Items });
     }
+
     getAllGroups = async () => {
         return API.get("endpoints", "restaurant-meetup-groups");
     }
 
-    handleSubmit = async (event) => {
-        event.preventDefault();
+    handleSubmit = async (groupId, users) => {
+
+        if (!users.includes(this.props.currentUser)) {
+            const updateGroupData = await this.updateGroup({
+                groupId: groupId,
+                user: this.props.currentUser
+            })
+
+            console.log('SELECT GROUP:', updateGroupData);
+        } else {
+            alert('you are already in the group');
+        }
+
+        const getAllGroupsData = await this.getAllGroups();
+        await this.setState({ groups: getAllGroupsData.Items });
+
+        // Step 1: make a function and API to pass data to Lex
+        // Step 2: move to chatbot page: this.props.history.push("/chatBot");
+    }
+
+    updateGroup = async (data) => {
+        return API.put("endpoints", "restaurant-meetup-groups", {
+            body: {
+                groupId: data.groupId,
+                user: data.user
+            }
+        })
     }
 
     render() {
@@ -29,11 +55,11 @@ export default class ListGroups extends Component {
         return (
             <Container className="ListGroups">
                 {this.state.groups.map((group, key) => (
-                    <Card style={{ backgroundColor: 'LightGray', width: '20rem', padding: '0.2em' }} key={key}>
+                    <Card style={{ backgroundColor: 'LightGray', width: '20rem', padding: '0.2em' }} key={group.groupId}>
                     <Card.Body>
                         <Card.Title>{group.name}</Card.Title>
                         <Card.Text>{group.description}</Card.Text>
-                        <Button id="joinBtn" variant="primary" onClick={this.handleSubmit}>Join</Button>
+                        <Button id="joinBtn" variant="primary" value={group.groupId} onClick={this.handleSubmit.bind(this, group.groupId, group.users)}>Join</Button>
                     </Card.Body>
                     {group.users.map((user, userKey) =>(
                         <Card.Footer key={userKey}>

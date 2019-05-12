@@ -42,7 +42,7 @@ class App extends Component {
         await Auth.signOut();
         this.userHasAuthenticated(false);
         this.logUser('');
-        this.props.history.push("/login");
+        this.props.history.push("/");
     }
 
     render() {
