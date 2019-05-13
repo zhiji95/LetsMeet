@@ -7,19 +7,15 @@ export async function main(event, context) {
   const params = {
     TableName: "restaurant-meetup-users",
     Key: {
-        "userId": event.pathParameters.id
+
     }
   };
 
   try {
-    const result = await dynamoDbLib.call("get", params);
-    if (result.Item) {
-        // Return the retrieved item
-        return success(result.Item);
-      } else {
-        return failure({ status: false, error: "Item not found." });
-      }
+    const result = await dynamoDbLib.call("scan", params);
+    return success(result);
     } catch (e) {
+      console.log(e)
       return failure({ status: false });
     }
 }

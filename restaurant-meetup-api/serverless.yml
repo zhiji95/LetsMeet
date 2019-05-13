@@ -45,11 +45,11 @@ functions:
           method: post
           cors: true
 
-  getUser:
-    handler: getUser.main
+  getUsers:
+    handler: getUsers.main
     events:
       - http:
-          path: restaurant-meetup-users/{id}
+          path: restaurant-meetup-users
           method: get
           cors: true
 
