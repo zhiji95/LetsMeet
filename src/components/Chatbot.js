@@ -17,25 +17,24 @@ class Chatbot extends Component {
     handleNewMessage = (input, data) => {
         if (data && data.slice(0, 2) === 'OK') {
             const dataArray = data.split(' ');
+            const restaurantNameArray = dataArray.slice(dataArray.indexOf('reserving') + 1, dataArray.indexOf('for'));
+
+            const name = restaurantNameArray.join(' ');
             let lat = dataArray[dataArray.length - 5];
             let lng = dataArray[dataArray.length - 4];
 
             lat = lat.substring(1, lat.length - 1);
             lng = lng.substring(0, lng.length -2);
 
-            this.props.logRecommendation({latitude: lat, longitude: lng});
-            // this.props.history.push("/map");
-            this.setState({
-                isFinal: true
-            })
-        } else {
-            this.setState({
-                messages: [...this.state.messages,
-                    { me: true, author: "Me", body: input },
-                    { me: false, author: "Bot", body: data }],
-            })
+            this.props.logRecommendation({name: name, latitude: lat, longitude: lng});
+            this.setState({ isFinal: true })
         }
 
+        this.setState({
+            messages: [...this.state.messages,
+                { me: true, author: "Me", body: input },
+                { me: false, author: "Bot", body: data }],
+        })
     }
 
     handleSubmit = () => {
