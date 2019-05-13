@@ -13,6 +13,7 @@
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-geocode": "^0.1.2",
+    "react-google-maps": "^9.4.5",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.5",
     "serverless-offline": "^4.10.0",
