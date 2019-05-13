@@ -43,12 +43,23 @@ export default class ListGroups extends Component {
         return API.get("endpoints", "restaurant-meetup-users");
     }
 
-    handleGeocode = (address) => {
+    handleAddress = (address) => {
         Geocode.setApiKey('AIzaSyBGCQae31kBA51sdMgem5Rh_moVP-XcPtY');
         return Geocode.fromAddress(address)
         .then((response) => {
-                const { lat, lng } = response.results[0].geometry.location;
-                return {latitude: lat, longitude: lng};
+            const { lat, lng } = response.results[0].geometry.location;
+            return {latitude: lat, longitude: lng};
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    handleGeocode = (lat, lng) => {
+        Geocode.setApiKey('AIzaSyBGCQae31kBA51sdMgem5Rh_moVP-XcPtY');
+        return Geocode.fromLatLng(lat, lng)
+        .then((response) => {
+            const address = response.results[0].formatted_address;
+            return address;
         }).catch((error) => {
             console.log(error);
         });
@@ -103,19 +114,26 @@ export default class ListGroups extends Component {
             if (participantsSet.has(user.userId)) {
                 const userObj = { 'name': user.name,
                                 'userId': user.userId,
-                                'address': user.address };
+                                'address': user.address,
+                                'latlng': ''};
                 participants.push(userObj);
-                const geocode = this.handleGeocode(user.address);
+                const geocode = this.handleAddress(user.address);
                 geocodePromises.push(geocode);
             }
         })
 
         const coordinates = await this.handlePromises(geocodePromises);
+        coordinates.forEach((coord, index) => {
+            participants[index].latlng = {lat: coord.latitude, lng: coord.longitude}
+        });
+
+        console.log(participants);
         const midpoint = geolib.getCenterOfBounds(coordinates);
-        console.log('Midpoint: ', midpoint);
+        const target = await this.handleGeocode(midpoint.latitude, midpoint.longitude);
+        console.log('Midpoint: ', midpoint, target);
 
         await this.sendLexMessage('meet');
-        await this.sendLexMessage(midpoint);
+        await this.sendLexMessage(target);
 
         this.props.logParticipants(participants);
         this.props.history.push("/chatBot");
