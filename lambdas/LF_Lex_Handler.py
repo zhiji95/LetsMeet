@@ -559,9 +559,10 @@ def dispatch(intent_request):
                 .format(cuisine, numPeople, diningTime)
                 for k in range(len(res_json['businesses'])):
                     response += str(k+1) + '. ' + res_json['businesses'][k]['name'] + ', located at ' \
-                    + res_json['businesses'][k]['location']['address1'] + ', coordinates: ' + \
-                    str(res_json['businesses'][k]['coordinates']['latitude']) + ',' + \
-                    str(res_json['businesses'][k]['coordinates']['longitude']) + '\n'
+                    + res_json['businesses'][k]['location']['address1'] \
+                    + ' at coordinates: (' + \
+                    str(round(float(res_json['businesses'][k]['coordinates']['latitude']), 4)) + ', ' + \
+                    str(round(float(res_json['businesses'][k]['coordinates']['longitude']), 4)) + ')\n'
                     
                     top_choices.append(res_json['businesses'][k])
                     
@@ -607,6 +608,19 @@ def dispatch(intent_request):
                     #     ] 
                     # }
                     )
+        elif int(choice) not in [1,2,3]:
+            response = "Sorry, could you please choose 1, 2, or 3?"
+
+            return elicit_slot(
+                output_session_attributes, 
+                intent_name, 
+                intent_request['currentIntent']['slots'], 
+                "choice",
+                {
+                    "contentType": "PlainText",
+                    "content": response
+                },
+                None)
         else:
             # URL = 'https://api.yelp.com/v3/businesses/search?term={}&location={}&limit=3'\
             # .format(cuisine, location)
@@ -632,7 +646,12 @@ def dispatch(intent_request):
             #             response += ', '
             
             ideal_business = top_choices[int(choice)-1]
-            response = "OK, I am reserving " + ideal_business['name'] + " for you. Enjoy your meal!"
+            response = "OK, I am reserving " + ideal_business['name'] + " for you," \
+            + " located at " + ideal_business['location']['address1'] \
+            + " at coordinates: (" \
+            + str(round(float(ideal_business['coordinates']['latitude']), 4)) + ', ' \
+            + str(round(float(ideal_business['coordinates']['longitude']), 4)) \
+            + "). Enjoy your meal!"
             
             # else:
             #     response = "Sorry, I couldn't find {} dining suggestions for {} people, for today at {}.\n "\
