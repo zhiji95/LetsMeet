@@ -11,7 +11,7 @@ class GroupControl extends Component {
         return (
             <div className="GroupControl">
                 <div className="ListGroups">
-                    <ListGroups currentUser={this.props.loggedOnUser}/>
+                    <ListGroups currentUser={this.props.loggedOnUser} logParticipants={this.props.logParticipants} history={this.props.history}/>
                 </div>
                 <div className="CreateGroup">
                     <CreateGroup currentUser={this.props.loggedOnUser}/>

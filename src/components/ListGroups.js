@@ -13,8 +13,7 @@ export default class ListGroups extends Component {
             groups: [],
             users: [],
             selectedGroup: [],
-            participants: [],
-            coordinates: []
+            participants: []
         };
     }
 
@@ -25,6 +24,15 @@ export default class ListGroups extends Component {
 
     getAllGroups = async () => {
         return API.get("endpoints", "restaurant-meetup-groups");
+    }
+
+    updateGroup = async (data) => {
+        return API.put("endpoints", "restaurant-meetup-groups", {
+            body: {
+                groupId: data.groupId,
+                user: data.user
+            }
+        })
     }
 
     getGroup = async (groupId) => {
@@ -52,6 +60,18 @@ export default class ListGroups extends Component {
         })
     }
 
+    // handlePromise = async (promise) => {
+    //     return Promise.resolve(promise).then((value) => {
+    //         return value;
+    //     })
+    // }
+
+    sendLexMessage = (message) => {
+        return API.post("endpoints", "lf0",  {
+            body: message
+        })
+    }
+
     handleSubmit = async (groupId, users) => {
         // if (!users.includes(this.props.currentUser)) {
         //     const updateGroupData = await this.updateGroup({
@@ -76,29 +96,29 @@ export default class ListGroups extends Component {
         const getGroupData = await this.getGroup(groupId);
         await this.setState({ selectedGroup: getGroupData });
 
-        const participants = new Set(this.state.selectedGroup.users);
+        const participantsSet = new Set(this.state.selectedGroup.users);
+        const participants = [];
         const geocodePromises = [];
         this.state.users.forEach(user => {
-            if (participants.has(user.userId)) {
+            if (participantsSet.has(user.userId)) {
+                const userObj = { 'name': user.name,
+                                'userId': user.userId,
+                                'address': user.address };
+                participants.push(userObj);
                 const geocode = this.handleGeocode(user.address);
                 geocodePromises.push(geocode);
             }
         })
 
-        const midpoint = await this.handlePromises(geocodePromises);
-        console.log(geolib.getCenterOfBounds(midpoint));
+        const coordinates = await this.handlePromises(geocodePromises);
+        const midpoint = geolib.getCenterOfBounds(coordinates);
+        console.log('Midpoint: ', midpoint);
 
-        // Step 1: make a function and API to pass data to Lex
-        // Step 2: move to chatbot page: this.props.history.push("/chatBot");
-    }
+        await this.sendLexMessage('meet');
+        await this.sendLexMessage(midpoint);
 
-    updateGroup = async (data) => {
-        return API.put("endpoints", "restaurant-meetup-groups", {
-            body: {
-                groupId: data.groupId,
-                user: data.user
-            }
-        })
+        this.props.logParticipants(participants);
+        this.props.history.push("/chatBot");
     }
 
     render() {

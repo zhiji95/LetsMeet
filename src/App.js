@@ -12,7 +12,9 @@ class App extends Component {
         this.state = {
           isAuthenticated: false,
           isAuthenticating: true,
-          loggedOnUser: ""
+          loggedOnUser: "",
+          participants: [],
+          recommendation: {},
         };
     }
 
@@ -38,6 +40,14 @@ class App extends Component {
         this.setState({ loggedOnUser: email });
     }
 
+    logParticipants = (participants) => {
+        this.setState({ participants });
+    }
+
+    logRecommendation = (recommendation) => {
+        this.setState({ recommendation });
+    }
+
     handleLogout = async (event) => {
         await Auth.signOut();
         this.userHasAuthenticated(false);
@@ -50,7 +60,11 @@ class App extends Component {
             isAuthenticated: this.state.isAuthenticated,
             userHasAuthenticated: this.userHasAuthenticated,
             loggedOnUser: this.state.loggedOnUser,
-            logUser: this.logUser
+            logUser: this.logUser,
+            participants: this.state.participants,
+            logParticipants: this.logParticipants,
+            recommendation: this.state.recommendation,
+            logRecommendation: this.logRecommendation
         };
 
         return (
