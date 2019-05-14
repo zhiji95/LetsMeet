@@ -17,7 +17,12 @@ export default class Weather extends Component {
     //TODO: modify the get here and parse the reponse in string format
 
     getWeather = async () => {
-        return API.get("endpoints", "restaurant-meetup-groups");
+        return API.post("endpoints", "restaurant-meetup-weather",
+            {
+                body: {
+                    "city": "London"
+                }
+            });
     }
 
 

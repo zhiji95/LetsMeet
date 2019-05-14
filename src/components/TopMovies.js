@@ -19,7 +19,7 @@ export default class TopMovies extends Component {
     //TODO: modify the get here and parse the reponse in json format
 
     getMovies = async () => {
-        return API.get("endpoints", "restaurant-meetup-groups");
+        return API.get("endpoints", "restaurant-meetup-movies");
     }
 
 
