@@ -5,12 +5,17 @@ import InviteFriend from "./InviteFriend";
 
 import '../css/GroupControl.css';
 import Weather from "./Weather";
+import TopMovies from "./TopMovies";
 
 class GroupControl extends Component {
 
     render() {
         return (
             <div className="GroupControl">
+                <div className="TopMovies">
+                    <TopMovies currentUser={this.props.loggedOnUser} />
+
+                </div>
                 <div className="Weather">
                     <Weather currentUser={this.props.loggedOnUser} />
                 </div>
