@@ -3,3 +3,13 @@
     display: flex;
     flex-direction: column;
 }
+
+.Estimates {
+    display: flex;
+
+    text-align: center;
+}
+
+.Estimates h4 {
+    padding-left: 1em;
+}
