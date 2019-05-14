@@ -17,10 +17,13 @@ export default class Weather extends Component {
     //TODO: modify the get here and parse the reponse in string format
 
     getWeather = async () => {
+
+        var city = "London";
+
         return API.post("endpoints", "restaurant-meetup-weather",
             {
                 body: {
-                    "city": "London"
+                    "city": city
                 }
             });
     }
