@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import ListGroups from "./ListGroups";
 import CreateGroup from "./CreateGroup";
 import InviteFriend from "./InviteFriend";
-
-import '../css/GroupControl.css';
 import Weather from "./Weather";
 import TopMovies from "./TopMovies";
+
+import '../css/GroupControl.css';
+
 
 class GroupControl extends Component {
 
@@ -13,8 +14,7 @@ class GroupControl extends Component {
         return (
             <div className="GroupControl">
                 <div className="TopMovies">
-                    <TopMovies currentUser={this.props.loggedOnUser} />
-
+                    <TopMovies />
                 </div>
                 <div className="Weather">
                     <Weather currentUser={this.props.loggedOnUser} />

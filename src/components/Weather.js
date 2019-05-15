@@ -8,16 +8,46 @@ export default class Weather extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            users: [],
+        }
     }
 
     componentDidMount = async () => {
-        const getWeatherData = await this.getWeather();
-        await this.setState({ groups: getWeatherData.Items });
+        // const getWeatherData = await this.getWeather();
+        // await this.setState({ groups: getWeatherData.Items });
+        const getUsersData = await this.getUsers();
+        await this.setState({ users: getUsersData.Items });
+        await this.getLocation();
     }
     //TODO: modify the get here and parse the reponse in string format
 
-    getWeather = async () => {
+    getLocation = () => {
+        const success = (position) => {
+            const latitude  = position.coords.latitude;
+            const longitude = position.coords.longitude;
 
+            console.log('latlng: ', latitude, longitude);
+        }
+
+        const error = () => {
+            console.log('error');
+        }
+
+        const options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+          };
+
+        navigator.geolocation.getCurrentPosition(success, error, options)
+    }
+
+    getUsers = async () => {
+        return API.get("endpoints", "restaurant-meetup-users");
+    }
+
+    getWeather = async () => {
         var city = "London";
 
         return API.post("endpoints", "restaurant-meetup-weather",

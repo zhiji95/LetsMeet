@@ -71,12 +71,6 @@ export default class ListGroups extends Component {
         })
     }
 
-    // handlePromise = async (promise) => {
-    //     return Promise.resolve(promise).then((value) => {
-    //         return value;
-    //     })
-    // }
-
     sendLexMessage = (message) => {
         return API.post("endpoints", "lf0",  {
             body: message
@@ -84,16 +78,16 @@ export default class ListGroups extends Component {
     }
 
     handleSubmit = async (groupId, users) => {
-        // if (!users.includes(this.props.currentUser)) {
-        //     const updateGroupData = await this.updateGroup({
-        //         groupId: groupId,
-        //         user: this.props.currentUser
-        //     })
+        if (!users.includes(this.props.currentUser)) {
+            const updateGroupData = await this.updateGroup({
+                groupId: groupId,
+                user: this.props.currentUser
+            })
 
-        //     console.log('SELECT GROUP:', updateGroupData);
-        // } else {
-        //     alert('you are already in the group');
-        // }
+            console.log('SELECT GROUP:', updateGroupData);
+        } else {
+            alert('you are already in the group');
+        }
 
         // get all groups
         const getAllGroupsData = await this.getAllGroups();

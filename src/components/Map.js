@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { compose, withProps, lifecycle } from "recompose";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, DirectionsRenderer } from 'react-google-maps'
+import { API } from "aws-amplify";
 import '../css/Map.css';
 
  export class RenderMap extends Component {
@@ -10,17 +11,38 @@ import '../css/Map.css';
         super(props);
 
         this.state = {
-            me: {lat: 40.7486596, lng: -73.9902115},
-            loggedOnUser: "pjs221@naver.com",
-            recommendation: {name: "Oiji", latitude: "40.7273", longitude: "-73.9858"},
-            participants: [{name: "User 2", userId: "jjp2181@columbia.edu", address: "43-25 Hunter Street, Long Island City, NY, 11101", latlng: {lat: 40.7477419, lng: -73.9423707}}, {name: "User 3", userId: "pjs221@naver.com", address: "125 W 31st st, New York, NY, 10001", latlng: {lat: 40.7486596, lng: -73.9902115}}, {name: "User 1", userId: "jordanjpark@gmail.com", address: "99 John Street, New York, NY, 10038", latlng: {lat: 40.7083595, lng: -74.0060041}}],
-            directions: null,
-            estimates: [],
+
+
+                me: {lat: 40.7486596, lng: -73.9902115},
+                loggedOnUser: "pjs221@naver.com",
+                recommendation: {name: "Oiji", latitude: "40.7273", longitude: "-73.9858"},
+                participants: [{name: "User 2", userId: "jjp2181@columbia.edu", address: "43-25 Hunter Street, Long Island City, NY, 11101", latlng: {lat: 40.7477419, lng: -73.9423707}}, {name: "User 3", userId: "pjs221@naver.com", address: "125 W 31st st, New York, NY, 10001", latlng: {lat: 40.7486596, lng: -73.9902115}}, {name: "User 1", userId: "jordanjpark@gmail.com", address: "99 John Street, New York, NY, 10038", latlng: {lat: 40.7083595, lng: -74.0060041}}],
+
+
             // recommendation: this.props.recommendation,
             // participants: this.props.participants,
             // loggedOnUser: this.props.loggedOnUser,
-
+            directions: null,
+            estimates: []
         };
+    }
+
+    componentDidMount = () => {
+        this.input.focus()
+    }
+
+    handleFormSubmit = async (event) => {
+        event.preventDefault()
+        await this.sendSMS(this.input.value);
+    }
+
+    sendSMS = (phoneNumber) => {
+        console.log(phoneNumber)
+        return API.post("endpoints", "restaurant-meetup-send-sms",  {
+            body: {
+                phoneNumber: phoneNumber
+            }
+        })
     }
 
     render() {
@@ -105,15 +127,28 @@ import '../css/Map.css';
          ));
 
         // console.log('END', this.state.estimates);
-
         return (
             <div className="DefaultMap">
                 <h3>Here is our estimate for trips to {this.state.recommendation.name}:</h3>
                 <div className="Estimates">
                     {this.state.estimates.map((user, index) =>
-                        <h4>{user.name}: {user.distance} - {user.time}</h4>
+                        <h4 key={index}>{user.name}: {user.distance} - {user.time}</h4>
                     )}
                 </div>
+                <form className="MessageForm" onSubmit={this.handleFormSubmit}>
+                <div className="input-container">
+                <input
+                    type="text"
+                    ref={(node) => (this.input = node)}
+                    placeholder="Enter Phone Number"
+                />
+                </div>
+                <div className="button-container">
+                <button type="submit">
+                    Notify!
+                </button>
+                </div>
+            </form>
                 <DefaultMap />
             </div>
         )

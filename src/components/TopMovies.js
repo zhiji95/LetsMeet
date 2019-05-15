@@ -1,74 +1,36 @@
 import React, { Component } from 'react'
 import {Container, Card} from "react-bootstrap";
 import { API } from "aws-amplify";
+import '../css/TopMovies.css'
 
 export default class TopMovies extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            movies:[]
+            movies: []
         }
 
     }
 
     componentDidMount = async () => {
         const getMovieData = await this.getMovies();
-        await this.setState({ movies: getMovieData.Items });
+        await this.setState({ movies: getMovieData.body.results.slice(0, 9) });
     }
-    //TODO: modify the get here and parse the reponse in json format
 
-    getMovies = async () => {
+    getMovies = () => {
         return API.get("endpoints", "restaurant-meetup-movies");
     }
-
-
-    // handleAddress = (address) => {
-    //     Geocode.setApiKey('AIzaSyBGCQae31kBA51sdMgem5Rh_moVP-XcPtY');
-    //     return Geocode.fromAddress(address)
-    //     .then((response) => {
-    //         const { lat, lng } = response.results[0].geometry.location;
-    //         return {latitude: lat, longitude: lng};
-    //     }).catch((error) => {
-    //         console.log(error);
-    //     });
-    // }
-
-    // handleGeocode = (lat, lng) => {
-    //     Geocode.setApiKey('AIzaSyBGCQae31kBA51sdMgem5Rh_moVP-XcPtY');
-    //     return Geocode.fromLatLng(lat, lng)
-    //     .then((response) => {
-    //         const address = response.results[0].formatted_address;
-    //         return address;
-    //     }).catch((error) => {
-    //         console.log(error);
-    //     });
-    // }
-
-    // handlePromises = async (promises) => {
-    //     return Promise.all(promises).then((values) => {
-    //         return values;
-    //     })
-    // }
-
-    // handlePromise = async (promise) => {
-    //     return Promise.resolve(promise).then((value) => {
-    //         return value;
-    //     })
-    // }
-
-
-
 
     render() {
         return (
             <Container className="ListMovies">
-                {this.state.movies.map((movie) => (
-                    <Card style={{ backgroundColor: 'LightGray', width: '20rem', padding: '0.2em' }}>
-                    <Card.Body>
-                        <Card.Title>{movie.name}</Card.Title>
-                        <Card.Text>{movie.description}</Card.Text>
-                    </Card.Body>
+                {this.state.movies.map((movie, index) => (
+                    <Card style={{width: "20em"}} key={index}>
+                        <Card.Img variant="top" src=                        {`https://image.tmdb.org/t/p/w500${movie.poster_path}`} style={{width: "10em"}} fluid="true" />
+                        <Card.Body>
+                            <Card.Title>{movie.title}</Card.Title>
+                        </Card.Body>
                     </Card>
                 ))}
             </Container>

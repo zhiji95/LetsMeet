@@ -1,0 +1,14 @@
+.ListMovies.container {
+    padding: 0.2em;
+    width: 80%;
+    display: flex;
+    text-align: center;
+}
+
+.card {
+    border: 0.2em solid white;
+}
+
+.card-body {
+    padding: 0.2em;
+}
