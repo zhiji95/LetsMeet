@@ -52,8 +52,6 @@ export default class Weather extends Component {
     }
 
     getWeather = async () => {
-        var city = "London";
-
         return API.post("endpoints", "restaurant-meetup-weather",
             {
                 body: {
@@ -102,12 +100,14 @@ export default class Weather extends Component {
 
 
     render() {
+        // style={{width: "200em"}
         return <Container className="Weather">
             {this.state.weather.map((weather, index) => (
-                <Card style={{width: "20em"}} key={index}>
+                <Card bg="primary" text="white" style={{ width: '120rem' }} key={index}>
+                    <Card.Header>Weather</Card.Header>
                     <Card.Img variant="top" src={`http://openweathermap.org/img/w/${weather.icon}.png`} style={{width: "10em"}} fluid="true" />
                     <Card.Body>
-                        <Card.Title>Weather: {weather.main}</Card.Title>
+                        <Card.Title>{weather.main}</Card.Title>
                     </Card.Body>
                 </Card>
             ))}
