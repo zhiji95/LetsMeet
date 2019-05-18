@@ -27,9 +27,10 @@ export default class TopMovies extends Component {
             <Container className="ListMovies">
                 {this.state.movies.map((movie, index) => (
                     <Card style={{width: "20em"}} key={index}>
-                        <Card.Img variant="top" src=                        {`https://image.tmdb.org/t/p/w500${movie.poster_path}`} style={{width: "10em"}} fluid="true" />
+                        <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} style={{width: "10em"}} fluid="true" />
                         <Card.Body>
                             <Card.Title>{movie.title}</Card.Title>
+                            <Card.Link href={`https://www.themoviedb.org/movie/${movie.id}`}>Movie Link</Card.Link>
                         </Card.Body>
                     </Card>
                 ))}
