@@ -107,16 +107,20 @@ export default class Weather extends Component {
         // style={{width: "200em"}
         return <Container className="Weather">
             {this.state.weather.map((weather, index) => (
-                <Card bg="primary" text="white" key={index}>
-                    <Card.Header>Weather</Card.Header>
-                    <Card.Img variant="top" src={`http://openweathermap.org/img/w/${weather.icon}.png`} style={{width: "10em"}} fluid="true" />
-                    <Card.Body>
-                        <Card.Title>{weather.main}</Card.Title>
-                        <Card.Text>Today's Temperature is {Math. round(this.state.main.temp - 273.15)} ℃</Card.Text>
-                        <Card.Text>Humidity: {this.state.main.humidity}%</Card.Text>
+                <div class="p-3 mb-2 bg-primary text-white" align="center">
+                    <h3>Today's weather is {weather.main} : {weather.description}.</h3>
+                    <h3>Current Hemperature: {Math. round(this.state.main.temp - 273.15)}°C / Humidity: {this.state.main.humidity}%</h3>
+                </div>
+                // <Card bg="primary" text="white" key={index}>
+                //     <Card.Header>Weather</Card.Header>
+                //     <Card.Img variant="top" src={`http://openweathermap.org/img/w/${weather.icon}.png`} style={{width: "10em"}} fluid="true" />
+                //     <Card.Body>
+                //         <Card.Title>{weather.main}</Card.Title>
+                //         <Card.Text>Today's Temperature is {Math. round(this.state.main.temp - 273.15)} ℃</Card.Text>
+                //         <Card.Text>Humidity: {this.state.main.humidity}%</Card.Text>
 
-                    </Card.Body>
-                </Card>
+                //     </Card.Body>
+                // </Card>
 
             ))}
 
