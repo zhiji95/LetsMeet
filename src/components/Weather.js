@@ -4,13 +4,15 @@ import Geocode from "react-geocode";
 import geolib from "geolib";
 import { API } from "aws-amplify";
 
+
 export default class Weather extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             users: [],
-            weather: []
+            weather: [],
+            main:{}
         }
     }
 
@@ -23,6 +25,7 @@ export default class Weather extends Component {
 
         const getWeatherData = await this.getWeather();
         await this.setState({ weather: getWeatherData.body.weather.slice(0, 1) });
+        await this.setState({ main: getWeatherData.body.main });
     }
     //TODO: modify the get here and parse the reponse in string format
 
@@ -47,6 +50,7 @@ export default class Weather extends Component {
         navigator.geolocation.getCurrentPosition(success, error, options)
     }
 
+
     getUsers = async () => {
         return API.get("endpoints", "restaurant-meetup-users");
     }
@@ -55,8 +59,8 @@ export default class Weather extends Component {
         return API.post("endpoints", "restaurant-meetup-weather",
             {
                 body: {
-                    "latitude": 78,
-                    "longitude": 65
+                    "latitude": 40.7831,
+                    "longitude": -73.9712
                 }
             });
     }
@@ -103,14 +107,19 @@ export default class Weather extends Component {
         // style={{width: "200em"}
         return <Container className="Weather">
             {this.state.weather.map((weather, index) => (
-                <Card bg="primary" text="white" style={{ width: '120rem' }} key={index}>
+                <Card bg="primary" text="white" key={index}>
                     <Card.Header>Weather</Card.Header>
                     <Card.Img variant="top" src={`http://openweathermap.org/img/w/${weather.icon}.png`} style={{width: "10em"}} fluid="true" />
                     <Card.Body>
                         <Card.Title>{weather.main}</Card.Title>
+                        <Card.Text>Today's Temperature is {Math. round(this.state.main.temp - 273.15)} ℃</Card.Text>
+                        <Card.Text>Humidity: {this.state.main.humidity}%</Card.Text>
+
                     </Card.Body>
                 </Card>
+
             ))}
+
         </Container>
         // console.log(this.getWeather());
         // return (
