@@ -13,11 +13,11 @@ class GroupControl extends Component {
     render() {
         return (
             <div className="GroupControl">
-                <div className="Weather">
-                    <Weather currentUser={this.props.loggedOnUser} />
-                </div>
                 <div className="TopMovies">
                     <TopMovies />
+                </div>
+                <div className="Weather">
+                    <Weather currentUser={this.props.loggedOnUser} />
                 </div>
                 <div className="ListGroups">
                     <ListGroups currentUser={this.props.loggedOnUser} logParticipants={this.props.logParticipants} history={this.props.history}/>

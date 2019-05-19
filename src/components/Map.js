@@ -11,12 +11,16 @@ import '../css/Map.css';
         super(props);
 
         this.state = {
-
-
-                me: {lat: 40.7901742, lng: -73.9521714},
-                loggedOnUser: "alannah.amaryah@0hcow.com",
-                recommendation: {name: "Barn Joo 35", latitude: "40.7590", longitude: "-73.9748"},
-                participants: [{name: "Jordan", userId: "jjp2181@columbia.edu", address: "43-25 Hunter Street, Long Island City, NY, 11101", latlng: {lat: 40.7477419, lng: -73.9423707}}, {name: "Zhi Ji", userId: "pjs221@naver.com", address: "43 5th Ave New York, NY 10003", latlng: {lat: 40.7340199, lng: -73.9968153}}, {name: "Yida", userId: "jordanjpark@gmail.com", address: "224 W 79th St, New York, NY 10024", latlng: {lat: 40.7833698, lng: -73.9825972}}, {name: "Sinyi", userId: "alannah.amaryah@0hcow.com", address: "116th St & Broadway, New York, NY 10027", latlng: {lat: 40.7901742, lng: -73.9521714}},],
+                // Origin map
+                me: {lat: 40.7486596, lng: -73.9902115},
+                loggedOnUser: "pjs221@naver.com",
+                recommendation: {name: "Oiji", latitude: "40.7273", longitude: "-73.9858"},
+                participants: [{name: "User 2", userId: "jjp2181@columbia.edu", address: "43-25 Hunter Street, Long Island City, NY, 11101", latlng: {lat: 40.7477419, lng: -73.9423707}}, {name: "User 3", userId: "pjs221@naver.com", address: "125 W 31st st, New York, NY, 10001", latlng: {lat: 40.7486596, lng: -73.9902115}}, {name: "User 1", userId: "jordanjpark@gmail.com", address: "99 John Street, New York, NY, 10038", latlng: {lat: 40.7083595, lng: -74.0060041}}],
+                //Below map looks better, same as report image
+                // me: {lat: 40.7901742, lng: -73.9521714},
+                // loggedOnUser: "alannah.amaryah@0hcow.com",
+                // recommendation: {name: "Barn Joo 35", latitude: "40.7590", longitude: "-73.9748"},
+                // participants: [{name: "Jordan", userId: "jjp2181@columbia.edu", address: "43-25 Hunter Street, Long Island City, NY, 11101", latlng: {lat: 40.7477419, lng: -73.9423707}}, {name: "Zhi Ji", userId: "pjs221@naver.com", address: "43 5th Ave New York, NY 10003", latlng: {lat: 40.7340199, lng: -73.9968153}}, {name: "Yida", userId: "jordanjpark@gmail.com", address: "224 W 79th St, New York, NY 10024", latlng: {lat: 40.7833698, lng: -73.9825972}}, {name: "Sinyi", userId: "alannah.amaryah@0hcow.com", address: "116th St & Broadway, New York, NY 10027", latlng: {lat: 40.7901742, lng: -73.9521714}},],
             // recommendation: this.props.recommendation,
             // participants: this.props.participants,
             // loggedOnUser: this.props.loggedOnUser,
