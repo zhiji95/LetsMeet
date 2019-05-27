@@ -8,3 +8,5 @@ https://youtu.be/M0toieYQfDw
 
 ## Project Report
 https://github.com/zhiji95/LetsMeet/blob/master/project%20report/Project%20Report.pdf
+
+![LetsMeet](https://github.com/zhiji95/LetsMeet/blob/master/letsmeet.PNG "Homepage of LetsMeet")
